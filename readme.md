@@ -48,7 +48,8 @@ El flujo completo se ejecuta de manera automatizada dentro de Databricks, garant
 * **Delta Lake** (Almacenamiento transaccional y confiable en formato columnar)
 * **Python** (Generación local del CSV de prueba y scripts de soporte)
 
----
+---<img width="641" height="430" alt="Captura de pantalla 2026-10-12 161553" src="https://github.com/user-attachments/assets/ecb353ae-82d8-4f9e-9a67-06744dd541c5" />
+
 
 ## Conclusión
 
