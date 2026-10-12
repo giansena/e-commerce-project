@@ -1,18 +1,18 @@
 # Pipeline Medallón Automatizado en Databricks: De Datos Desestructurados a un Esquema Estrella
 
-> **Nota del autor:** Este proyecto fue desarrollado de forma completamente independiente como pieza clave para mi portfolio personal. No responde a un encargo laboral ni a una propuesta corporativa, sino al desafío técnico de simular un escenario real de ingeniería de datos con fuentes altamente inconsistentes. Para recrear este escenario, generé inicialmente un archivo CSV masivo y deliberadamente caótico utilizando un script de Python local, simulando un volcado de base de datos legacy desestructurado.
+> Este proyecto fue desarrollado de forma completamente independiente como pieza clave para mi portfolio personal. No responde a un encargo laboral ni a una propuesta corporativa, sino al desafío técnico de simular un escenario real de ingeniería de datos con fuentes altamente inconsistentes. Para recrear este escenario, generé inicialmente un archivo CSV masivo y deliberadamente caótico utilizando un script de Python local, simulando un volcado de base de datos legacy desestructurado.
 
 ---
 
-## 🚀 Resumen del Proyecto
+## Resumen del Proyecto
 
-En el ecosistema de datos actual, lidiar con fuentes de información caóticas es el pan de cada día. Este repositorio implementa un **pipeline de datos end-to-end automatizado** —orquestado mediante un job en Databricks— diseñado para procesar un flujo de pedidos desastroso y transformarlo, a través de una **arquitectura en capas (Medallion: Bronze $\rightarrow$ Silver $\rightarrow$ Gold)**, en un modelo dimensional limpio de tipo **esquema estrella**. 
+En el ecosistema de datos actual, lidiar con fuentes de información caóticas es el pan de cada día. Este repositorio implementa un **pipeline de datos end-to-end automatizado** ,orquestado mediante un job en Databricks, diseñado para procesar un flujo de pedidos desastroso y transformarlo, a través de una **arquitectura en capas (Medallion: Bronze $\rightarrow$ Silver $\rightarrow$ Gold)**, en un modelo dimensional limpio de tipo **esquema estrella**. 
 
 Elegí un esquema estrella para la capa final porque representa el estándar de la industria para cargas analíticas y modelado dimensional (OLAP). Al separar los hechos transaccionales de las dimensiones descriptivas (clientes, ubicaciones, productos, estados de pago y tiempo), optimizamos drásticamente el rendimiento de las consultas y facilitamos la integración con herramientas de Business Intelligence.
 
 ---
 
-## 🏛️ Arquitectura del Pipeline y Capas
+## Arquitectura del Pipeline y Capas
 
 El flujo completo se ejecuta de manera automatizada dentro de Databricks, garantizando idempotencia, trazabilidad y tolerancia a fallos en cada etapa:
 
@@ -22,11 +22,11 @@ El flujo completo se ejecuta de manera automatizada dentro de Databricks, garant
 * **Características clave:** Incorpora evolución automática de esquemas (`addNewColumns`) y una columna de auditoría (`_ingested_at`) para registrar el momento exacto de la ingesta sin perder un solo byte de la fuente original.
 
 ### 2. Capa Silver (Limpieza y Normalización)
-* **Tecnología:** PySpark DataFrame API.
+* **Tecnología:** PySpark.
 * **Propósito:** Transformar los datos crudos resolviendo inconsistencias estructurales complejas.
 * **Transformaciones aplicadas:**
   * Parseo y separación de cadenas compuestas (`cliente_info` desglosado en nombre, email y ciudad mediante separadores de barras verticales).
-  * Limpieza de montos monetarios (eliminación de símbolos como USD, $, ARS, normalización de separadores de miles y decimales, y casteo seguro a float con `try_cast`).
+  * Limpieza de montos monetarios (eliminación de símbolos como USD, $, ARS, normalización de separadores de miles y decimales, y casteo seguro a float con `try_cast`), he decidido tomar todos los montos como si fuesen de una misma moneda.
   * Estandarización de textos (mayúsculas/minúsculas y control de espacios en blanco, aplicando valores por defecto ante nulos).
   * Explosión de listas de productos anidados (`explode` sobre los ítems comprados extrayendo nombre y cantidad individual con expresiones regulares).
   * Deduplicación estricta del dataset resultante.
@@ -41,7 +41,7 @@ El flujo completo se ejecuta de manera automatizada dentro de Databricks, garant
 
 ---
 
-## 🛠️ Tecnologías y Herramientas Utilizadas
+##  Tecnologías y Herramientas Utilizadas
 
 * **Databricks** (Plataforma unificada de análisis)
 * **Apache Spark / PySpark** (Procesamiento distribuido)
@@ -50,6 +50,6 @@ El flujo completo se ejecuta de manera automatizada dentro de Databricks, garant
 
 ---
 
-## 📈 Conclusión
+## Conclusión
 
 Este proyecto refleja la capacidad de diseñar flujos robustos de ingeniería de datos desde cero: desde la gestión de ingestas desacopladas y eficientes con Auto Loader hasta la estructuración rigurosa de almacenes de datos orientados al rendimiento analítico. Si te interesa discutir sobre arquitectura de datos, optimización en Spark o tienes alguna sugerencia, ¡siempre estoy abierto a conectar!
